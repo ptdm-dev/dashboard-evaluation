@@ -1367,7 +1367,11 @@ CBDS#2358,"Surya Madistrindo, PT",Bandung,Training for the Trainers,15,BMK,24,18
 
         function renderProgramPie(classes) {
             destroyChart('programPieChart');
-            const counts = {}; classes.forEach(c => { const p = c['Program'] || 'Other'; counts[p] = (counts[p] || 0) + 1; });
+            const counts = {}; classes.forEach(c => {
+                let p = c['Program'] || 'Other';
+                if (p === 'LTM') p = 'LTR';
+                counts[p] = (counts[p] || 0) + 1;
+            });
             const labels = Object.keys(counts), data = Object.values(counts);
             chartInstances['programPieChart'] = new Chart(document.getElementById('programPieChart'), {
                 type: 'doughnut', data: { labels, datasets: [{ data, backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#f43f5e', '#06b6d4'], borderWidth: 2 }] },
@@ -1415,6 +1419,10 @@ CBDS#2358,"Surya Madistrindo, PT",Bandung,Training for the Trainers,15,BMK,24,18
             const monthly = {};
             data.classes.forEach(c => {
                 const p = c['Tanggal Kelas'].split('/'); if (p.length < 3) return;
+                // Dynamic: skip future months
+                const classDate = new Date(+p[2], +p[1] - 1, +p[0]);
+                if (classDate > new Date()) return;
+
                 const k = `${p[2]}-${p[1].padStart(2, '0')}`;
                 if (!monthly[k]) monthly[k] = { sum: 0, count: 0, label: `${p[2]}-${p[1]}` };
                 monthly[k].sum += parsePercentage(c[targetQ + ' A']); monthly[k].count++;

@@ -1284,7 +1284,11 @@ CBDS#2358,"Surya Madistrindo, PT",Bandung,Training for the Trainers,15,BMK,24,18
         function renderProgramPie(data) {
             destroyChart('programPieChart');
             const counts = {};
-            data.forEach(r => { const p = r['Program'] || 'Other'; counts[p] = (counts[p] || 0) + 1; });
+            data.forEach(r => {
+                let p = r['Program'] || 'Other';
+                if (p === 'LTM') p = 'LTR';
+                counts[p] = (counts[p] || 0) + 1;
+            });
             chartInstances['programPieChart'] = new Chart(document.getElementById('programPieChart'), {
                 type: 'doughnut', data: {
                     labels: Object.keys(counts), datasets: [{
@@ -1311,8 +1315,9 @@ CBDS#2358,"Surya Madistrindo, PT",Bandung,Training for the Trainers,15,BMK,24,18
             data.forEach(r => {
                 const p = r['Tanggal Kelas'].split('/');
                 if (p.length < 3) return;
-                // FIX: Filter out invalid future years
-                if (parseInt(p[2]) > 2025) return;
+                // Dynamic: skip future months
+                const classDate = new Date(+p[2], +p[1] - 1, +p[0]);
+                if (classDate > new Date()) return;
                 const key = `${p[2]}-${p[1].padStart(2, '0')}`;
                 const label = new Date(parseInt(p[2]), parseInt(p[1]) - 1).toLocaleString('default', { month: 'short', year: 'numeric' });
                 if (!monthly[key]) monthly[key] = { label, sum: 0, count: 0 };

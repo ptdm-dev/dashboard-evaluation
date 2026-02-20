@@ -1340,8 +1340,9 @@ CBDS#2358,"Surya Madistrindo, PT",Bandung,Training for the Trainers,15,BMK,24,18
             classes.forEach(c => {
                 const parts = c['Tanggal Kelas'].split('/');
                 if (parts.length < 3) return;
-                // FIX: Filter out future dates > 2025
-                if (parseInt(parts[2]) > 2025) return;
+                // Dynamic: skip future months
+                const classDate = new Date(+parts[2], +parts[1] - 1, +parts[0]);
+                if (classDate > new Date()) return;
 
                 const k = `${parts[2]}-${parts[1].padStart(2, '0')}`;
                 if (!monthly[k]) monthly[k] = { sum: 0, count: 0 };
@@ -1366,7 +1367,11 @@ CBDS#2358,"Surya Madistrindo, PT",Bandung,Training for the Trainers,15,BMK,24,18
 
         function renderProgramPie(classes) {
             destroyChart('programPieChart');
-            const counts = {}; classes.forEach(c => { const p = c['Program'] || 'Other'; counts[p] = (counts[p] || 0) + 1; });
+            const counts = {}; classes.forEach(c => {
+                let p = c['Program'] || 'Other';
+                if (p === 'LTM') p = 'LTR';
+                counts[p] = (counts[p] || 0) + 1;
+            });
             chartInstances['programPieChart'] = new Chart(document.getElementById('programPieChart'), {
                 type: 'doughnut',
                 data: { labels: Object.keys(counts), datasets: [{ data: Object.values(counts), backgroundColor: ['#8b5cf6', '#a78bfa', '#c4b5fd', '#ddd6fe', '#ede9fe'], borderWidth: 0 }] },

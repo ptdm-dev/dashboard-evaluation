@@ -1182,7 +1182,7 @@ CBDS#2358,"Surya Madistrindo, PT",Bandung,Training for the Trainers,15,BMK,24,18
         let allData = [], nationalBenchmarks = {}, chartInstances = {};
         const QUESTIONS = ['Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q11', 'Q12', 'Q13', 'Q14'];
         const PROGRAM_COLORS = {
-            'DL': '#2563eb', 'SPW': '#10b981', 'CBDS': '#8b5cf6', 'LTM': '#f59e0b',
+            'DL': '#2563eb', 'SPW': '#10b981', 'CBDS': '#8b5cf6', 'LTR': '#f59e0b',
             'HIP': '#f43f5e', 'ECC': '#0891b2', 'CBSC': '#64748b', 'SA': '#dc2626'
         };
         function getColor(prog, idx) { return PROGRAM_COLORS[prog] || ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b', '#f43f5e', '#0891b2', '#64748b', '#dc2626', '#84cc16', '#ec4899'][idx % 10]; }
@@ -1253,7 +1253,8 @@ CBDS#2358,"Surya Madistrindo, PT",Bandung,Training for the Trainers,15,BMK,24,18
             destroyChart('comparisonChart');
             const progStats = {};
             data.forEach(r => {
-                const p = r['Program'];
+                let p = r['Program'];
+                if (p === 'LTM') p = 'LTR';
                 if (!progStats[p]) { progStats[p] = {}; QUESTIONS.forEach(q => progStats[p][q] = { sum: 0, count: 0 }); }
                 QUESTIONS.forEach(q => { progStats[p][q].sum += parsePercentage(r[q + ' A']); progStats[p][q].count++; });
             });
@@ -1311,13 +1312,15 @@ CBDS#2358,"Surya Madistrindo, PT",Bandung,Training for the Trainers,15,BMK,24,18
             data.forEach(r => {
                 const p = r['Tanggal Kelas'].split('/');
                 if (p.length < 3) return;
-                // FIX: Filter out future dates (e.g. 2026) that might be typos or planned
-                if (parseInt(p[2]) > 2025) return;
+                // Dynamic: skip future months
+                const classDate = new Date(+p[2], +p[1] - 1, +p[0]);
+                if (classDate > new Date()) return;
 
                 const key = `${p[2]}-${p[1].padStart(2, '0')}`;
                 const label = new Date(+p[2], +p[1] - 1).toLocaleString('default', { month: 'short', year: 'numeric' });
                 if (!monthly[key]) monthly[key] = { label, programs: {}, allSum: 0, allCount: 0 };
-                const prog = r['Program'];
+                let prog = r['Program'];
+                if (prog === 'LTM') prog = 'LTR';
                 if (!monthly[key].programs[prog]) monthly[key].programs[prog] = { sum: 0, count: 0 };
                 const v = parsePercentage(r[qKey]);
                 monthly[key].programs[prog].sum += v;
@@ -1433,7 +1436,11 @@ CBDS#2358,"Surya Madistrindo, PT",Bandung,Training for the Trainers,15,BMK,24,18
         function renderProgramPie(data) {
             destroyChart('programPieChart');
             const counts = {};
-            data.forEach(r => { const p = r['Program'] || 'Other'; counts[p] = (counts[p] || 0) + 1; });
+            data.forEach(r => {
+                let p = r['Program'] || 'Other';
+                if (p === 'LTM') p = 'LTR';
+                counts[p] = (counts[p] || 0) + 1;
+            });
             const progs = Object.keys(counts).sort();
             chartInstances['programPieChart'] = new Chart(document.getElementById('programPieChart'), {
                 type: 'doughnut',

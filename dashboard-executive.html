@@ -59,7 +59,6 @@
                 <div class="bg-amber-600 rounded-lg p-2"><i class="fa-solid fa-chart-pie text-white"></i></div>
                 <div>
                     <h1 class="text-lg font-bold">Executive Summary</h1>
-                    <p class="text-xs text-amber-300">Dale Carnegie Indonesia</p>
                 </div>
             </div>
             <div class="flex items-center space-x-3 flex-wrap gap-2">
@@ -109,15 +108,7 @@
                     </div>
                     <div class="mt-1.5 text-xs text-slate-500 font-semibold">Participants</div>
                 </div>
-                <div class="kpi-card glass-card rounded-xl shadow-sm p-5 border border-slate-100 animate-in">
-                    <div class="flex items-center justify-between"><span class="text-2xl font-extrabold text-slate-800"
-                            id="kpiTrainers">0</span>
-                        <div class="bg-violet-50 p-2 rounded-lg"><i class="fa-solid fa-user-tie text-violet-500"></i>
-                        </div>
-                    </div>
-                    <div class="mt-1.5 text-xs text-slate-500 font-semibold">Active Trainers</div>
-                </div>
-                <!-- Duration KPI Added -->
+                <!-- Duration KPI -->
                 <div class="kpi-card glass-card rounded-xl shadow-sm p-5 border border-slate-100 animate-in">
                     <div class="flex items-center justify-between"><span class="text-2xl font-extrabold text-slate-800"
                             id="kpiDuration">0</span>
@@ -125,12 +116,22 @@
                     </div>
                     <div class="mt-1.5 text-xs text-slate-500 font-semibold">Total Duration (Hrs)</div>
                 </div>
+                <!-- In-House Companies KPI -->
                 <div class="kpi-card glass-card rounded-xl shadow-sm p-5 border border-slate-100 animate-in">
                     <div class="flex items-center justify-between"><span class="text-2xl font-extrabold text-slate-800"
-                            id="kpiCompanies">0</span>
+                            id="kpiInHouse">0</span>
                         <div class="bg-rose-50 p-2 rounded-lg"><i class="fa-solid fa-building text-rose-500"></i></div>
                     </div>
-                    <div class="mt-1.5 text-xs text-slate-500 font-semibold">Companies</div>
+                    <div class="mt-1.5 text-xs text-slate-500 font-semibold">In-House Companies</div>
+                </div>
+                <!-- Public Classes KPI -->
+                <div class="kpi-card glass-card rounded-xl shadow-sm p-5 border border-slate-100 animate-in">
+                    <div class="flex items-center justify-between"><span class="text-2xl font-extrabold text-slate-800"
+                            id="kpiPublic">0</span>
+                        <div class="bg-violet-50 p-2 rounded-lg"><i
+                                class="fa-solid fa-users-rectangle text-violet-500"></i></div>
+                    </div>
+                    <div class="mt-1.5 text-xs text-slate-500 font-semibold">Public Classes</div>
                 </div>
 
             </div>
@@ -141,9 +142,12 @@
                 <div class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-lg font-bold text-slate-800">Top 10 Trainers</h3>
-                        <select id="topTrainerQSelect"
-                            class="text-sm border-slate-200 rounded-md py-1.5 px-3 focus:ring-amber-500 focus:border-amber-500">
-                            <option value="Q1">Q1 Avg</option>
+                        <select id="topTrainerQSelect" onchange="render()"
+                            class="bg-violet-50 border-violet-100 text-violet-700 text-xs rounded-lg px-2 py-1 outline-none">
+                            <option value="classes">Number of Classes</option>
+                            <option value="participants">Number of Participants</option>
+                            <option value="hours">Trainer Hours</option>
+                            <option value="Q1" selected>Q1 Avg</option>
                             <option value="Q2">Q2 Avg</option>
                             <option value="Q3">Q3 Avg</option>
                             <option value="Q4">Q4 Avg</option>
@@ -170,9 +174,18 @@
 
             <!-- Charts Row 2 -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-2 bg-white rounded-xl shadow-sm p-6 border border-slate-100">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4">Overall Monthly Trend (Q1 A%)</h3>
-                    <div class="h-72"><canvas id="trendChart"></canvas></div>
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-slate-100 h-full">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-slate-800">Overall Monthly Trend</h3>
+                        <select id="trendMetricSelect" onchange="render()"
+                            class="bg-violet-50 border-violet-100 text-violet-700 text-xs rounded-lg px-2 py-1 outline-none">
+                            <option value="Q1" selected>Q1 Avg Score</option>
+                            <option value="classes">Number of Classes</option>
+                            <option value="participants">Number of Participants</option>
+                            <option value="hours">Trainer Hours</option>
+                        </select>
+                    </div>
+                    <div class="h-64"><canvas id="trendChart"></canvas></div>
                 </div>
                 <div class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
                     <h3 class="text-lg font-bold text-slate-800 mb-4">Program Distribution</h3>
@@ -196,10 +209,18 @@
 
             <!-- Trainer Summary Table -->
             <div class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
-                <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
                     <h3 class="text-lg font-bold text-slate-800">Trainer Summary</h3>
-                    <input type="text" id="tableSearch" placeholder="Search..."
-                        class="text-sm border-slate-200 rounded-md py-1.5 px-3">
+                    <div class="flex items-center gap-2">
+                        <select id="trainerSortSelect"
+                            class="text-sm border-slate-200 rounded-md py-1.5 px-3 focus:ring-amber-500 focus:border-amber-500">
+                            <option value="classes">Sort by Classes</option>
+                            <option value="participants">Sort by Participants</option>
+                            <option value="hours">Sort by Trainer Hours</option>
+                        </select>
+                        <input type="text" id="tableSearch" placeholder="Search..."
+                            class="text-sm border-slate-200 rounded-md py-1.5 px-3">
+                    </div>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-slate-200">
@@ -212,6 +233,8 @@
                                 </th>
                                 <th class="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase">
                                     Participants</th>
+                                <th class="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase">
+                                    Trainer Hrs</th>
                                 <th class="px-3 py-3 text-center text-xs font-medium text-slate-500 uppercase">Q1</th>
                                 <th class="px-3 py-3 text-center text-xs font-medium text-slate-500 uppercase">Q2</th>
                                 <th class="px-3 py-3 text-center text-xs font-medium text-slate-500 uppercase">Q3</th>
@@ -1192,6 +1215,7 @@ CBDS#2358,"Surya Madistrindo, PT",Bandung,Training for the Trainers,15,BMK,24,18
         document.getElementById('tableSearch').addEventListener('input', render);
         document.getElementById('topTrainerQSelect').addEventListener('change', render);
         document.getElementById('cityMetricSelect').addEventListener('change', render);
+        document.getElementById('trainerSortSelect').addEventListener('change', render);
 
         function processData(data) {
             allData = data.filter(r => r['Trainer'] && r['Tanggal Kelas']);
@@ -1210,6 +1234,12 @@ CBDS#2358,"Surya Madistrindo, PT",Bandung,Training for the Trainers,15,BMK,24,18
             render();
         }
 
+        function parseDate(dateStr) {
+            const p = dateStr.split('/');
+            if (p.length < 3) return null;
+            return new Date(+p[2], +p[1] - 1, +p[0]);
+        }
+
         function render() {
             const year = document.getElementById('yearSelect').value;
             const search = document.getElementById('tableSearch').value.toLowerCase();
@@ -1222,8 +1252,11 @@ CBDS#2358,"Surya Madistrindo, PT",Bandung,Training for the Trainers,15,BMK,24,18
             document.getElementById('kpiClasses').textContent = filtered.length;
             document.getElementById('kpiParticipants').textContent = filtered.reduce((s, r) => s + (parseInt(r['Jumlah Peserta']) || 0), 0).toLocaleString();
             document.getElementById('kpiDuration').textContent = filtered.reduce((s, r) => s + (parseInt(r['Durasi']) || 0), 0).toLocaleString();
-            document.getElementById('kpiTrainers').textContent = new Set(filtered.map(r => r['Trainer'])).size;
-            document.getElementById('kpiCompanies').textContent = new Set(filtered.map(r => r['Perusahaan'])).size;
+
+            // In-House vs Public KPIs
+            const inHouseCompanies = new Set(filtered.filter(r => r['Perusahaan'] !== 'Public Class').map(r => r['Perusahaan']));
+            document.getElementById('kpiInHouse').textContent = inHouseCompanies.size;
+            document.getElementById('kpiPublic').textContent = filtered.filter(r => r['Perusahaan'] === 'Public Class').length;
 
 
             renderTopTrainers(filtered);
@@ -1236,36 +1269,63 @@ CBDS#2358,"Surya Madistrindo, PT",Bandung,Training for the Trainers,15,BMK,24,18
 
         function renderTopTrainers(data) {
             destroyChart('topTrainersChart');
-            const selectedQ = document.getElementById('topTrainerQSelect').value; // e.g. "Q1" or "Q2"
-            const qKey = selectedQ + ' A';
+            const metric = document.getElementById('topTrainerQSelect').value;
             const stats = {};
 
             data.forEach(r => {
                 const t = r['Trainer'];
-                if (!stats[t]) stats[t] = { sum: 0, count: 0 };
-                const val = parsePercentage(r[qKey]);
-                if (val > 0) {
-                    stats[t].sum += val;
-                    stats[t].count++;
+                if (!stats[t]) stats[t] = { sum: 0, count: 0, classes: 0, participants: 0, hours: 0 };
+
+                stats[t].classes++;
+                stats[t].participants += (parseInt(r['Jumlah Peserta']) || 0);
+                stats[t].hours += (parseInt(r['Durasi']) || 0);
+
+                if (metric.startsWith('Q')) {
+                    const val = parsePercentage(r[metric + ' A']);
+                    if (val > 0) {
+                        stats[t].sum += val;
+                        stats[t].count++;
+                    }
                 }
             });
 
-            // Calculate Avg and Sort
-            // Filter out trainers with less than N classes if needed, or just top by avg
-            // Let's stick to simple top avg for now, maybe with min count > 0
-            const sorted = Object.entries(stats)
-                .filter(e => e[1].count > 0)
-                .map(e => ({ name: e[0], avg: Math.round(e[1].sum / e[1].count) }))
-                .sort((a, b) => b.avg - a.avg) // Descending
-                .slice(0, 10);
+            let sorted = [];
+            let label = '';
+            let isPercentage = false;
+
+            if (metric === 'classes') {
+                label = 'Number of Classes';
+                sorted = Object.entries(stats)
+                    .map(e => ({ name: e[0], value: e[1].classes }))
+                    .sort((a, b) => b.value - a.value);
+            } else if (metric === 'participants') {
+                label = 'Number of Participants';
+                sorted = Object.entries(stats)
+                    .map(e => ({ name: e[0], value: e[1].participants }))
+                    .sort((a, b) => b.value - a.value);
+            } else if (metric === 'hours') {
+                label = 'Trainer Hours';
+                sorted = Object.entries(stats)
+                    .map(e => ({ name: e[0], value: e[1].hours }))
+                    .sort((a, b) => b.value - a.value);
+            } else {
+                label = `Avg ${metric} A%`;
+                isPercentage = true;
+                sorted = Object.entries(stats)
+                    .filter(e => e[1].count > 0)
+                    .map(e => ({ name: e[0], value: Math.round(e[1].sum / e[1].count) }))
+                    .sort((a, b) => b.value - a.value);
+            }
+
+            sorted = sorted.slice(0, 10);
 
             chartInstances['topTrainersChart'] = new Chart(document.getElementById('topTrainersChart'), {
                 type: 'bar',
                 data: {
                     labels: sorted.map(e => e.name),
                     datasets: [{
-                        label: `Avg ${selectedQ} A%`,
-                        data: sorted.map(e => e.avg),
+                        label: label,
+                        data: sorted.map(e => e.value),
                         backgroundColor: '#f59e0b',
                         borderRadius: 6
                     }]
@@ -1273,7 +1333,11 @@ CBDS#2358,"Surya Madistrindo, PT",Bandung,Training for the Trainers,15,BMK,24,18
                 options: {
                     indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
                     scales: {
-                        x: { min: 0, max: 100, ticks: { callback: v => v + '%' }, grid: { color: '#f3f4f6' } },
+                        x: {
+                            beginAtZero: true,
+                            ticks: { callback: v => isPercentage ? v + '%' : v.toLocaleString() },
+                            grid: { color: '#f3f4f6' }
+                        },
                         y: { grid: { display: false } }
                     }
                 }
@@ -1283,7 +1347,7 @@ CBDS#2358,"Surya Madistrindo, PT",Bandung,Training for the Trainers,15,BMK,24,18
         function renderTopCompanies(data) {
             destroyChart('topCompaniesChart');
             const counts = {};
-            data.forEach(r => { const c = r['Perusahaan']; counts[c] = (counts[c] || 0) + 1; });
+            data.filter(r => r['Perusahaan'] !== 'Public Class').forEach(r => { const c = r['Perusahaan']; counts[c] = (counts[c] || 0) + 1; });
             const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 10);
             const labels = sorted.map(e => e[0].length > 25 ? e[0].substring(0, 25) + '...' : e[0]);
             chartInstances['topCompaniesChart'] = new Chart(document.getElementById('topCompaniesChart'), {
@@ -1297,30 +1361,85 @@ CBDS#2358,"Surya Madistrindo, PT",Bandung,Training for the Trainers,15,BMK,24,18
 
         function renderTrend(data) {
             destroyChart('trendChart');
+            const metric = document.getElementById('trendMetricSelect').value;
             const monthly = {};
+
             data.forEach(r => {
                 const p = r['Tanggal Kelas'].split('/');
                 if (p.length < 3) return;
-                // FIX: Filter out future dates > 2025
-                if (parseInt(p[2]) > 2025) return;
+                const classDate = new Date(+p[2], +p[1] - 1, +p[0]);
+                if (classDate > new Date()) return;
 
                 const key = `${p[2]}-${p[1].padStart(2, '0')}`;
                 const label = new Date(+p[2], +p[1] - 1).toLocaleString('default', { month: 'short', year: 'numeric' });
-                if (!monthly[key]) monthly[key] = { label, sum: 0, count: 0 };
-                const v = parsePercentage(r['Q1 A']); if (v > 0) { monthly[key].sum += v; monthly[key].count++; }
+
+                if (!monthly[key]) monthly[key] = { label, sum: 0, count: 0, classes: 0, participants: 0, hours: 0 };
+
+                monthly[key].classes++;
+                monthly[key].participants += (parseInt(r['Jumlah Peserta']) || 0);
+                monthly[key].hours += (parseInt(r['Durasi']) || 0);
+
+                if (metric === 'Q1') {
+                    const v = parsePercentage(r['Q1 A']);
+                    if (v > 0) {
+                        monthly[key].sum += v;
+                        monthly[key].count++;
+                    }
+                }
             });
+
             const keys = Object.keys(monthly).sort();
+            let label = '', datasetLabel = '', isPercentage = false;
+            let chartData = [];
+
+            if (metric === 'Q1') {
+                label = 'Q1 A%';
+                datasetLabel = 'Q1 A%';
+                isPercentage = true;
+                chartData = keys.map(k => monthly[k].count > 0 ? Math.round(monthly[k].sum / monthly[k].count) : 0);
+            } else if (metric === 'classes') {
+                label = 'Classes';
+                datasetLabel = 'Number of Classes';
+                chartData = keys.map(k => monthly[k].classes);
+            } else if (metric === 'participants') {
+                label = 'Participants';
+                datasetLabel = 'Number of Participants';
+                chartData = keys.map(k => monthly[k].participants);
+            } else if (metric === 'hours') {
+                label = 'Hours';
+                datasetLabel = 'Trainer Hours';
+                chartData = keys.map(k => monthly[k].hours);
+            }
+
             chartInstances['trendChart'] = new Chart(document.getElementById('trendChart'), {
-                type: 'line', data: {
+                type: 'line',
+                data: {
                     labels: keys.map(k => monthly[k].label),
                     datasets: [{
-                        label: 'Q1 A%', data: keys.map(k => monthly[k].count > 0 ? Math.round(monthly[k].sum / monthly[k].count) : 0),
+                        label: datasetLabel,
+                        data: chartData,
                         borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: '#fff', pointBorderColor: '#f59e0b'
                     }]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false, scales: { y: { min: 0, max: 100, ticks: { callback: v => v + '%' }, grid: { color: '#f3f4f6' } }, x: { grid: { display: false } } },
-                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => 'Q1 A%: ' + ctx.parsed.y + '%' } } }
+                    responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: isPercentage ? 100 : undefined,
+                            ticks: { callback: v => isPercentage ? v + '%' : v.toLocaleString() },
+                            grid: { color: '#f3f4f6' }
+                        },
+                        x: { grid: { display: false } }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => `${datasetLabel}: ${ctx.parsed.y}${isPercentage ? '%' : ''}`
+                            }
+                        }
+                    }
                 }
             });
         }
@@ -1328,7 +1447,11 @@ CBDS#2358,"Surya Madistrindo, PT",Bandung,Training for the Trainers,15,BMK,24,18
         function renderProgramPie(data) {
             destroyChart('programPieChart');
             const counts = {};
-            data.forEach(r => { const p = r['Program'] || 'Other'; counts[p] = (counts[p] || 0) + 1; });
+            data.forEach(r => {
+                let p = r['Program'] || 'Other';
+                if (p === 'LTM') p = 'LTR';
+                counts[p] = (counts[p] || 0) + 1;
+            });
             chartInstances['programPieChart'] = new Chart(document.getElementById('programPieChart'), {
                 type: 'doughnut', data: {
                     labels: Object.keys(counts), datasets: [{
@@ -1391,13 +1514,15 @@ CBDS#2358,"Surya Madistrindo, PT",Bandung,Training for the Trainers,15,BMK,24,18
 
         function renderTable(data, search) {
             const tbody = document.getElementById('classTableBody'); tbody.innerHTML = '';
+            const sortBy = document.getElementById('trainerSortSelect').value; // classes, participants, hours
             // Group by trainer
             const trainers = {};
             data.forEach(r => {
                 const t = r['Trainer'];
-                if (!trainers[t]) trainers[t] = { classes: 0, participants: 0, qSums: {}, qCounts: {} };
+                if (!trainers[t]) trainers[t] = { classes: 0, participants: 0, hours: 0, qSums: {}, qCounts: {} };
                 trainers[t].classes++;
                 trainers[t].participants += (parseInt(r['Jumlah Peserta']) || 0);
+                trainers[t].hours += (parseInt(r['Durasi']) || 0);
                 QUESTIONS.forEach(q => {
                     if (!trainers[t].qSums[q]) trainers[t].qSums[q] = 0;
                     if (!trainers[t].qCounts[q]) trainers[t].qCounts[q] = 0;
@@ -1406,7 +1531,7 @@ CBDS#2358,"Surya Madistrindo, PT",Bandung,Training for the Trainers,15,BMK,24,18
                 });
             });
 
-            let rows = Object.entries(trainers).sort((a, b) => b[1].classes - a[1].classes);
+            let rows = Object.entries(trainers).sort((a, b) => b[1][sortBy] - a[1][sortBy]);
             if (search) rows = rows.filter(e => e[0].toLowerCase().includes(search));
 
             const rowsPerPage = 10;
@@ -1428,7 +1553,8 @@ CBDS#2358,"Surya Madistrindo, PT",Bandung,Training for the Trainers,15,BMK,24,18
                 });
                 tr.innerHTML = `<td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-slate-900 sticky left-0 bg-white z-10">${name}</td>
                 <td class="px-4 py-3 whitespace-nowrap text-sm text-center text-slate-700 font-semibold">${d.classes}</td>
-                <td class="px-4 py-3 whitespace-nowrap text-sm text-center text-slate-500">${d.participants.toLocaleString()}</td>${qCells}`;
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-center text-slate-500">${d.participants.toLocaleString()}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-center text-slate-500">${d.hours.toLocaleString()}</td>${qCells}`;
                 tbody.appendChild(tr);
             });
 
