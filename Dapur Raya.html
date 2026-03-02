@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Da.puraya - Exclusive Pre-Order</title>
+    <style>
+        :root {
+            --primary-orange: #e6553d;
+            --accent-yellow: #facc15;
+            --bg-cream: #fdf6f0;
+            --text-dark: #333333;
+            --text-red: #c23b24;
+            --line-color: #f5c8b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #eeeeee;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: var(--bg-cream);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .animate-up {
+            opacity: 0;
+            animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        .delay-4 { animation-delay: 0.8s; }
+
+        /* --- Header --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            color: var(--primary-orange);
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            font-family: "Impact", "Arial Black", sans-serif;
+            font-size: 32px;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--text-dark);
+        }
+
+        .header-right span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .header-right span:hover {
+            color: var(--primary-orange);
+        }
+
+        .header-right svg {
+            color: var(--primary-orange);
+        }
+
+        /* --- Hero Section --- */
+        .hero-section {
+            background-color: var(--primary-orange);
+            color: white;
+            padding: 60px 40px; 
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-section p {
+            font-size: 19px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            font-weight: bold;
+            font-size: 14px;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 1px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-yellow {
+            background-color: var(--accent-yellow);
+            color: var(--text-dark);
+            font-family: "Impact", "Arial Black", sans-serif;
+            font-size: 20px;
+            letter-spacing: 2px;
+        }
+
+        /* --- Split Section --- */
+        .split-section {
+            display: flex;
+            border-bottom: 2px solid var(--line-color);
+            background-color: var(--bg-cream);
+        }
+
+        .split-left {
+            flex: 1;
+            padding: 50px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-right: 2px solid var(--line-color);
+        }
+
+        .split-left h1 {
+            color: var(--primary-orange);
+            font-size: 38px;
+            line-height: 1.1;
+            margin-bottom: 15px;
+            font-family: "Impact", "Arial Black", sans-serif;
+        }
+
+        .split-left p {
+            color: var(--text-red);
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .btn-full {
+            background-color: var(--primary-orange);
+            color: white;
+            width: 100%;
+            padding: 16px;
+            font-size: 16px;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+            border-radius: 8px;
+        }
+
+        .split-right {
+            flex: 1;
+            background-color: #ffd8c7;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            padding: 30px;
+        }
+
+        .split-right img {
+            width: 100%;
+            max-width: 280px;
+            height: 280px;
+            object-fit: cover;
+            border-radius: 50%;
+            box-shadow: 0 15px 30px rgba(230, 85, 61, 0.3);
+            border: 6px solid white;
+            animation: float 5s ease-in-out infinite;
+        }
+
+        /* --- Menu Section --- */
+        .menu-section {
+            padding: 50px 30px;
+            background-color: var(--bg-cream);
+        }
+
+        .menu-header {
+            border-top: 2px solid var(--line-color);
+            border-bottom: 2px solid var(--line-color);
+            padding: 15px 0;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .menu-header h2 {
+            color: var(--primary-orange);
+            font-size: 28px;
+            font-family: "Impact", "Arial Black", sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            text-align: center;
+        }
+
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 15px;
+            border-radius: 16px;
+            background-color: transparent;
+            transition: all 0.4s ease;
+        }
+
+        .menu-item:hover {
+            background-color: white;
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(230, 85, 61, 0.15);
+        }
+
+        .menu-item:hover .menu-circle {
+            transform: scale(1.08) rotate(3deg);
+            box-shadow: 0 10px 20px rgba(230, 85, 61, 0.4);
+        }
+
+        .menu-circle {
+            width: 140px;
+            height: 140px;
+            border: 4px solid var(--primary-orange);
+            border-radius: 50%;
+            margin-bottom: 18px;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 6px 12px rgba(230, 85, 61, 0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .img-kecombrang { 
+            background-image: url('https://i.ibb.co.com/sJvBcV4R/Whats-App-Image-2026-03-02-at-11-15-34.jpg'); 
+            background-size: 150%; 
+            background-position: center; 
+        }
+        .img-matah { 
+            background-image: url('https://i.ibb.co.com/kg1Vd8tY/Whats-App-Image-2026-03-02-at-11-15-03.jpg'); 
+            background-size: 180%; 
+            background-position: center 60%; 
+        }
+        .img-paru { background-image: url('https://i.ibb.co.com/r2HcnqzK/Whats-App-Image-2026-03-02-at-11-15-57.jpg'); }
+
+        .menu-title {
+            color: var(--primary-orange);
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .menu-desc {
+            color: var(--text-dark);
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 18px;
+            flex-grow: 1;
+        }
+
+        .menu-price {
+            background-color: var(--accent-yellow);
+            color: var(--text-dark);
+            font-weight: bold;
+            font-size: 16px;
+            padding: 6px 18px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        /* --- Bottom Banner --- */
+        .bottom-banner {
+            background-color: var(--primary-orange);
+            color: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* =========================================
+           MOBILE RESPONSIVE TWEAKS 
+           ========================================= */
+        @media (max-width: 650px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px 20px;
+            }
+
+            .header-right {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .hero-section {
+                padding: 40px 20px;
+            }
+
+            .hero-section p {
+                font-size: 16px;
+                margin-bottom: 25px;
+            }
+
+            .btn-yellow {
+                font-size: 16px;
+                padding: 12px 24px;
+            }
+
+            .split-section { 
+                flex-direction: column; 
+            }
+
+            .split-left { 
+                border-right: none; 
+                border-bottom: 2px solid var(--line-color); 
+                padding: 40px 20px;
+                text-align: center;
+            }
+
+            .split-left h1 {
+                font-size: 32px;
+            }
+
+            .split-right {
+                padding: 40px 20px;
+            }
+
+            .split-right img {
+                width: 240px;
+                height: 240px;
+            }
+
+            .menu-section {
+                padding: 40px 20px;
+            }
+
+            .menu-grid { 
+                grid-template-columns: 1fr; 
+                gap: 20px; 
+            }
+
+            .menu-item {
+                background-color: white;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+                padding: 25px 20px;
+            }
+
+            .menu-item:hover {
+                transform: translateY(-5px);
+            }
+
+            .bottom-banner { 
+                flex-direction: column; 
+                align-items: center; 
+                gap: 10px; 
+                text-align: center;
+                font-size: 14px;
+            }
+            
+            .bottom-banner .dot {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- Header -->
+        <header class="animate-up">
+            <div class="logo">DA.PURAYA</div>
+            <div class="header-right">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                    @da.puraya
+                </span>
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                    </svg>
+                    +62 812-8357-7673
+                </span>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <p class="animate-up delay-1">Experience the authentic taste of home.<br>Crafted with <strong>100% natural ingredients</strong>—zero preservatives, no artificial colors, just pure, mouthwatering goodness in every bite.</p>
+            <div class="hero-buttons animate-up delay-2">
+                <a href="https://forms.gle/v8cR6DWWMvbcfBBu8" target="_blank" class="btn btn-yellow">SECURE YOUR PORTION</a>
+            </div>
+        </section>
+
+        <!-- Split Promo Section -->
+        <section class="split-section">
+            <div class="split-left animate-up delay-3">
+                <h1>Exclusive Pre-Order<br>Now Open!</h1>
+                <p>Don't miss out on our signature dishes! Spots are highly limited. Secure your order today and get ready for a culinary delight delivered fresh straight to your door.</p>
+                <a href="https://forms.gle/v8cR6DWWMvbcfBBu8" target="_blank" class="btn btn-full">ORDER NOW</a>
+            </div>
+            <div class="split-right animate-up delay-4">
+                <img src="https://i.ibb.co.com/B57fbMZg/Whats-App-Image-2026-03-02-at-11-16-36.jpg" alt="Promo Masakan">
+            </div>
+        </section>
+
+        <!-- Menu Section -->
+        <section class="menu-section">
+            <div class="menu-header">
+                <h2>Our Signature Menu</h2>
+            </div>
+            
+            <div class="menu-grid">
+                <!-- Menu 1 -->
+                <div class="menu-item">
+                    <div class="menu-circle img-kecombrang"></div>
+                    <div class="menu-title">Chicken Kecombrang</div>
+                    <div class="menu-desc">Aromatic, spicy, and deeply savory. A perfect blend of tender shredded chicken and the unique, fragrant kick of Kecombrang flower.</div>
+                    <div class="menu-price">IDR 110.000</div>
+                </div>
+                
+                <!-- Menu 2 -->
+                <div class="menu-item">
+                    <div class="menu-circle img-matah"></div>
+                    <div class="menu-title">Chicken Sambal Matah</div>
+                    <div class="menu-desc">Fresh, zesty, and fiery! Authentic Balinese-style raw sambal generously mixed with succulent shredded chicken.</div>
+                    <div class="menu-price">IDR 110.000</div>
+                </div>
+
+                <!-- Menu 3 -->
+                <div class="menu-item">
+                    <div class="menu-circle img-paru"></div>
+                    <div class="menu-title">Spicy Sweet Beef Lung</div>
+                    <div class="menu-desc">Crispy on the outside, tender on the inside. Generously coated in our addictive, caramelized spicy-sweet signature sauce.</div>
+                    <div class="menu-price">IDR 110.000</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Banner -->
+        <section class="bottom-banner">
+            <span>100% Natural</span>
+            <span class="dot">•</span>
+            <span>No Preservatives</span>
+            <span class="dot">•</span>
+            <span>No Artificial Colors</span>
+        </section>
+
+    </div>
+
+</body>
+</html>
