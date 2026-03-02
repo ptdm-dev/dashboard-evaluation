@@ -2,9 +2,15 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Looker Studio TV Player</title>
+    <title>Looker Studio TV - High Performance</title>
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #000; }
+        body, html { 
+            margin: 0; padding: 0; height: 100%; width: 100%; 
+            overflow: hidden; background: #000; 
+        }
+        /* Kontainer untuk menampung semua halaman */
+        .container { position: relative; width: 100%; height: 100%; }
+        
         iframe { 
             width: 100%; 
             height: 100%; 
@@ -12,41 +18,53 @@
             position: absolute; 
             top: 0; 
             left: 0; 
-            opacity: 0; 
-            transition: opacity 1.5s ease-in-out; 
-            z-index: 1;
+            visibility: hidden; /* Sembunyikan tapi tetap dimuat di memori */
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
         }
-        iframe.active { opacity: 1; z-index: 2; }
+        
+        /* Halaman yang sedang tampil */
+        iframe.active { 
+            visibility: visible;
+            opacity: 1;
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
 
-    <iframe class="active" src="https://lookerstudio.google.com/embed/reporting/cb78fec9-e94a-4eed-bdad-f37e7a31f5f7/page/qgR"></iframe>
-    <iframe src="https://lookerstudio.google.com/embed/reporting/cb78fec9-e94a-4eed-bdad-f37e7a31f5f7/page/p_k9e9e4pand"></iframe>
-    <iframe src="https://lookerstudio.google.com/embed/reporting/cb78fec9-e94a-4eed-bdad-f37e7a31f5f7/page/p_4ujyrtkwvd"></iframe>
-    <iframe src="https://lookerstudio.google.com/embed/reporting/cb78fec9-e94a-4eed-bdad-f37e7a31f5f7/page/p_zw34eukwvd"></iframe>
-    <iframe src="https://lookerstudio.google.com/embed/reporting/cb78fec9-e94a-4eed-bdad-f37e7a31f5f7/page/p_84z5bnlwvd"></iframe>
-    <iframe src="https://lookerstudio.google.com/embed/reporting/cb78fec9-e94a-4eed-bdad-f37e7a31f5f7/page/p_jpolznlwvd"></iframe>
-    <iframe src="https://lookerstudio.google.com/embed/reporting/cb78fec9-e94a-4eed-bdad-f37e7a31f5f7/page/p_ka316nlwvd"></iframe>
-    <iframe src="https://lookerstudio.google.com/embed/reporting/cb78fec9-e94a-4eed-bdad-f37e7a31f5f7/page/p_jajefvkwvd"></iframe>
-    <iframe src="https://lookerstudio.google.com/embed/reporting/cb78fec9-e94a-4eed-bdad-f37e7a31f5f7/page/p_o3irwvkwvd"></iframe>
-    <iframe src="https://lookerstudio.google.com/embed/reporting/cb78fec9-e94a-4eed-bdad-f37e7a31f5f7/page/p_r6gij8lwvd"></iframe>
-    <iframe src="https://lookerstudio.google.com/embed/reporting/cb78fec9-e94a-4eed-bdad-f37e7a31f5f7/page/p_ea89m8lwvd"></iframe>
+    <div class="container">
+        <iframe class="active" src="https://lookerstudio.google.com/embed/reporting/cb78fec9-e94a-4eed-bdad-f37e7a31f5f7/page/qgR"></iframe>
+        <iframe src="https://lookerstudio.google.com/embed/reporting/cb78fec9-e94a-4eed-bdad-f37e7a31f5f7/page/p_k9e9e4pand"></iframe>
+        <iframe src="https://lookerstudio.google.com/embed/reporting/cb78fec9-e94a-4eed-bdad-f37e7a31f5f7/page/p_4ujyrtkwvd"></iframe>
+        <iframe src="https://lookerstudio.google.com/embed/reporting/cb78fec9-e94a-4eed-bdad-f37e7a31f5f7/page/p_zw34eukwvd"></iframe>
+        <iframe src="https://lookerstudio.google.com/embed/reporting/cb78fec9-e94a-4eed-bdad-f37e7a31f5f7/page/p_84z5bnlwvd"></iframe>
+        <iframe src="https://lookerstudio.google.com/embed/reporting/cb78fec9-e94a-4eed-bdad-f37e7a31f5f7/page/p_jpolznlwvd"></iframe>
+        <iframe src="https://lookerstudio.google.com/embed/reporting/cb78fec9-e94a-4eed-bdad-f37e7a31f5f7/page/p_ka316nlwvd"></iframe>
+        <iframe src="https://lookerstudio.google.com/embed/reporting/cb78fec9-e94a-4eed-bdad-f37e7a31f5f7/page/p_jajefvkwvd"></iframe>
+        <iframe src="https://lookerstudio.google.com/embed/reporting/cb78fec9-e94a-4eed-bdad-f37e7a31f5f7/page/p_o3irwvkwvd"></iframe>
+        <iframe src="https://lookerstudio.google.com/embed/reporting/cb78fec9-e94a-4eed-bdad-f37e7a31f5f7/page/p_r6gij8lwvd"></iframe>
+        <iframe src="https://lookerstudio.google.com/embed/reporting/cb78fec9-e94a-4eed-bdad-f37e7a31f5f7/page/p_ea89m8lwvd"></iframe>
+    </div>
 
     <script>
         const iframes = document.querySelectorAll('iframe');
         let currentIndex = 0;
-        const intervalTime = 25000; // 25 detik per halaman
+        const intervalTime = 30000; // 30 detik agar mata sempat membaca data
 
-        setInterval(() => {
+        function rotateDashboard() {
+            // Hilangkan status active dari yang sekarang
             iframes[currentIndex].classList.remove('active');
+
+            // Hitung index berikutnya
             currentIndex = (currentIndex + 1) % iframes.length;
+
+            // Munculkan yang berikutnya
             iframes[currentIndex].classList.add('active');
-            
-            // Refresh data secara halus
-            const currentSrc = iframes[currentIndex].src;
-            iframes[currentIndex].src = currentSrc;
-        }, intervalTime);
+        }
+
+        // Jalankan rotasi berdasarkan interval
+        setInterval(rotateDashboard, intervalTime);
     </script>
 </body>
 </html>
